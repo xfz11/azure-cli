@@ -385,6 +385,17 @@ def load_arguments(self, _):
     with self.argument_context('vm diagnostics set') as c:
         c.argument('storage_account', completer=get_resource_name_completion_list('Microsoft.Storage/storageAccounts'))
 
+    with self.argument_context('vm install-patches') as c:
+        c.argument('vm_name', arg_type=existing_vm_name)
+        c.argument('maximum_duration', type=str, help='Specifies the maximum amount of time that the operation will run. It must be an ISO 8601-compliant duration string such as PT4H (4 hours)')
+        c.argument('reboot_setting', type=str, help='Defines when it is acceptable to reboot a VM during a software update operation. Possible values are: IfRequired/ Never/Always')
+        c.argument('classifications_to_include', nargs='+', help='')
+        c.argument('kb_numbers_to_include', nargs='+', help='')
+        c.argument('kb_numbers_to_exclude', nargs='+', help='')
+        c.argument('exclude_kbs_requiring_reboot', type=str, help='')
+        c.argument('package_name_masks_to_include', nargs='+', help='')
+        c.argument('package_name_masks_to_exclude', nargs='+', help='')
+
     with self.argument_context('vm disk') as c:
         c.argument('vm_name', options_list=['--vm-name'], id_part=None, completer=get_resource_name_completion_list('Microsoft.Compute/virtualMachines'))
         c.argument('new', action='store_true', help='create a new disk')
