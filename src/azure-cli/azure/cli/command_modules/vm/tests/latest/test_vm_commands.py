@@ -5075,10 +5075,12 @@ class VMInstallPatchesScenarioTest(ScenarioTest):
     @ResourceGroupPreparer(name_prefix='cli_test_vm_install_patches_')
     def test_vm_install_patches(self, resource_group):
         # Create new one
-        # self.cmd(
-        #     'vm create -g {rg} -n vm --image Win2019Datacenter --enable-hotpatching true --admin-username azureuser --admin-password testPassword0 --nsg-rule NONE')
-        self.cmd('vm install-patches -g zxf-test -n vm --maximum-duration PT4H --reboot-setting IfRequired '
-                 '--classifications-to-include Critical Security')
+        self.cmd(
+            'vm create -g {rg} -n vm --image Win2019Datacenter --enable-hotpatching true --admin-username azureuser --admin-password testPassword0 --nsg-rule NONE')
+        self.cmd('vm install-patches -g {rg} -n vm --maximum-duration PT4H --reboot-setting IfRequired '
+                 '--classifications-to-include Critical Security --exclude-kbs-requiring-reboot true', checks=[
+            self.check('status', 'Succeeded')
+        ])
 
 class VMTrustedLaunchScenarioTest(ScenarioTest):
     @unittest.skip('Not supported')

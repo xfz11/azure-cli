@@ -3731,7 +3731,7 @@ def ios8601Compaliant(duration):
 
 # region install patches
 def install_vm_patches(cmd, resource_group_name, vm_name, maximum_duration, reboot_setting, classifications_to_include=None, kb_numbers_to_include=None, kb_numbers_to_exclude=None,
-                       exclude_kbs_requiring_reboot=None, max_patch_publish_date=None, package_name_masks_to_include=None, package_name_masks_to_exclude=None):
+                       exclude_kbs_requiring_reboot=None, package_name_masks_to_include=None, package_name_masks_to_exclude=None):
     from azure.mgmt.compute.models import VirtualMachineInstallPatchesParameters, WindowsParameters, LinuxParameters, VMGuestPatchRebootSetting, VMGuestPatchClassificationWindows, VMGuestPatchClassificationLinux
     if not ios8601Compaliant(maximum_duration):
         raise CLIError('maximum_duration value should be an ISO 8601-compliant duration string')

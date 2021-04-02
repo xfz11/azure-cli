@@ -825,7 +825,7 @@ type: command
 short-summary: Install patches on a VM.
 examples:
   - name: Install patches on a VM.
-    text: az vm install-patches -g MyResourceGroup -n MyVm
+    text: az vm install-patches -g MyResourceGroup -n MyVm --maximum-duration PT4H --reboot-setting IfRequired --classifications-to-include Critical Security --exclude-kbs-requiring-reboot true
 """
 
 
