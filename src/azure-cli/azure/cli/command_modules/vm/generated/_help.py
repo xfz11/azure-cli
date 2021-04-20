@@ -52,3 +52,160 @@ helps['sshkey delete'] = """
     type: command
     short-summary: "Delete an SSH public key."
 """
+
+helps['sig'] = """
+    type: group
+    short-summary: Manage gallery image with vm
+"""
+
+helps['sig update'] = """
+    type: command
+    short-summary: "Update a gallery image definition."
+    parameters:
+      - name: --identifier
+        short-summary: "This is the gallery image definition identifier."
+        long-summary: |
+            Usage: --identifier publisher=XX offer=XX sku=XX
+
+            publisher: Required. The name of the gallery image definition publisher.
+            offer: Required. The name of the gallery image definition offer.
+            sku: Required. The name of the gallery image definition SKU.
+      - name: --disallowed
+        short-summary: "Describes the disallowed disk types."
+        long-summary: |
+            Usage: --disallowed disk-types=XX
+
+            disk-types: A list of disk types.
+      - name: --purchase-plan
+        short-summary: "Describes the gallery image definition purchase plan. This is used by marketplace images."
+        long-summary: |
+            Usage: --purchase-plan name=XX publisher=XX product=XX
+
+            name: The plan ID.
+            publisher: The publisher ID.
+            product: The product ID.
+      - name: --features
+        short-summary: "A list of gallery image features."
+        long-summary: |
+            Usage: --features name=XX value=XX
+
+            name: The name of the gallery image feature.
+            value: The value of the gallery image feature.
+
+            Multiple actions can be specified by using more than one --features argument.
+      - name: --v-cp-us
+        short-summary: "Describes the resource range."
+        long-summary: |
+            Usage: --v-cp-us min=XX max=XX
+
+            min: The minimum number of the resource.
+            max: The maximum number of the resource.
+      - name: --memory
+        short-summary: "Describes the resource range."
+        long-summary: |
+            Usage: --memory min=XX max=XX
+
+            min: The minimum number of the resource.
+            max: The maximum number of the resource.
+    examples:
+      - name: Update a simple gallery image.
+        text: |-
+               az sig update --hyper-v-generation "V1" --identifier offer="myOfferName" publisher="myPublisherName" \
+sku="mySkuName" --os-state "Generalized" --os-type "Windows" --name "myGalleryImageName" --gallery-name \
+"myGalleryName" --resource-group "myResourceGroup"
+"""
+
+helps['sig group-list'] = """
+    type: command
+    short-summary: "List shared galleries by subscription id or tenant id."
+    examples:
+      - name: Get a gallery.
+        text: |-
+               az sig group-list --location "myLocation"
+"""
+
+helps['sig share'] = """
+    type: command
+    short-summary: "Update sharing profile of a gallery."
+    parameters:
+      - name: --groups
+        short-summary: "A list of sharing profile groups."
+        long-summary: |
+            Usage: --groups type=XX ids=XX
+
+            type: This property allows you to specify the type of sharing group. <br><br> Possible values are: \
+<br><br> **Subscriptions** <br><br> **AADTenants**
+            ids: A list of subscription/tenant ids the gallery is aimed to be shared to.
+
+            Multiple actions can be specified by using more than one --groups argument.
+    examples:
+      - name: Add sharing id to the sharing profile of a gallery.
+        text: |-
+               az sig share --gallery-name "myGalleryName" --resource-group "myResourceGroup" --groups \
+type="Subscriptions" ids="34a4ab42-0d72-47d9-bd1a-aed207386dac" ids="380fd389-260b-41aa-bad9-0a83108c370b" --groups \
+type="AADTenants" ids="c24c76aa-8897-4027-9b03-8f7928b54ff6" --operation-type "Add"
+      - name: reset sharing profile of a gallery.
+        text: |-
+               az sig share --gallery-name "myGalleryName" --resource-group "myResourceGroup" --operation-type "Reset"
+"""
+
+helps['sig wait'] = """
+    type: command
+    short-summary: Place the CLI in a waiting state until a condition of the sig is met.
+    examples:
+      - name: Pause executing next line of CLI script until the sig is successfully updated.
+        text: |-
+               az sshkey wait --resource-group "myResourceGroup" --name "mySshPublicKeyName" --updated
+      - name: Pause executing next line of CLI script until the sig is successfully created.
+        text: |-
+               az sshkey wait --resource-group "myResourceGroup" --name "mySshPublicKeyName" --created
+"""
+
+helps['sig image-definition'] = """
+    type: group
+    short-summary: Manage shared gallery image with vm
+"""
+
+helps['sig image-definition list'] = """
+    type: command
+    short-summary: "List shared gallery images by subscription id or tenant id."
+    examples:
+      - name: Get a gallery.
+        text: |-
+               az sig image-definition list --gallery-unique-name "galleryUniqueName" --location "myLocation"
+"""
+
+helps['sig image-definition show'] = """
+    type: command
+    short-summary: "Get a shared gallery image by subscription id or tenant id."
+    examples:
+      - name: Get a gallery.
+        text: |-
+               az sig image-definition show --gallery-image-name "myGalleryImageName" --gallery-unique-name \
+"galleryUniqueName" --location "myLocation"
+"""
+
+helps['sig image-version'] = """
+    type: group
+    short-summary: Manage shared gallery image version with vm
+"""
+
+helps['sig image-version list'] = """
+    type: command
+    short-summary: "List shared gallery image versions by subscription id or tenant id."
+    examples:
+      - name: Get a gallery.
+        text: |-
+               az sig image-version list --gallery-image-name "myGalleryImageName" --gallery-unique-name \
+"galleryUniqueName" --location "myLocation"
+"""
+
+helps['sig image-version show'] = """
+    type: command
+    short-summary: "Get a shared gallery image version by subscription id or tenant id."
+    examples:
+      - name: Get a gallery.
+        text: |-
+               az sig image-version show --gallery-image-name "myGalleryImageName" --gallery-image-version-name \
+"myGalleryImageVersionName" --gallery-unique-name "galleryUniqueName" --location "myLocation"
+"""

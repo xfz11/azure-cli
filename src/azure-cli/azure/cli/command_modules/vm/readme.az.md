@@ -77,16 +77,12 @@ cli:
             param: vmName
           alias: name
         - where:
-            group: "Galleries"
-            op: "Update"
-          hidden: false
-        - where:
             group: "GallerySharingProfile"
             op: "Update"
           hidden: false
         - where:
             group: "SharedGalleries"
-            op: "*"
+            op: "List"
           hidden: false
         - where:
             group: "SharedGalleryImages"
@@ -107,27 +103,15 @@ directive:
     set:
       group: sshkey
   - where: 
-      group: vm gallerysharingprofile
-    set:
-      group: sig share
-  - where: 
       group: vm sharedgallery
     set:
       group: sig share
   - where: 
-      command: vm sharedgallery list
-    set:
-      command: sig group-list
-  - where: 
-      group: vm gallery
-    set:
-      group: sig
-  - where: 
-      group: vm sharedgalleryimages
-    set:
-      group: sig image-definition
-  - where: 
-      group: vm sharedgalleryimageversions
+      group: vm sharedgalleryimageversion
     set:
       group: sig image-version
+  - where: 
+      group: vm sharedgalleryimage
+    set:
+      group: sig imagedefinition
 ```

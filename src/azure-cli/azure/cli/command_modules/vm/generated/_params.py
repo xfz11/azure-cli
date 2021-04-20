@@ -12,10 +12,19 @@
 
 from azure.cli.core.commands.parameters import (
     tags_type,
+    get_enum_type,
     resource_group_name_type,
     get_location_type
 )
 from azure.cli.core.commands.validators import get_default_location_from_resource_group
+from ..action import (
+    AddIdentifier,
+    AddDisallowed,
+    AddPurchasePlan,
+    AddFeatures,
+    AddVCpUs,
+    AddGroups
+)
 
 
 def load_arguments(self, _):
@@ -54,3 +63,77 @@ def load_arguments(self, _):
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('ssh_public_key_name', options_list=['--name', '-n', '--ssh-public-key-name'], type=str, help='The '
                    'name of the SSH public key.', id_part='name')
+
+    with self.argument_context('sig update') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('gallery_name', type=str, help='The name of the Shared Image Gallery in which the Image Definition '
+                   'is to be updated.', id_part='name')
+        c.argument('gallery_image_name', options_list=['--name', '-n', '--gallery-image-name'], type=str, help='The '
+                   'name of the gallery image definition to be updated. The allowed characters are alphabets and '
+                   'numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80 characters.',
+                   id_part='child_name_1')
+        c.argument('tags', tags_type)
+        c.argument('description', type=str, help='The description of this gallery image definition resource. This '
+                   'property is updatable.')
+        c.argument('eula', type=str, help='The Eula agreement for the gallery image definition.')
+        c.argument('privacy_statement_uri', type=str, help='The privacy statement uri.')
+        c.argument('release_note_uri', type=str, help='The release note uri.')
+        c.argument('os_type', arg_type=get_enum_type(['Windows', 'Linux']), help='This property allows you to specify '
+                   'the type of the OS that is included in the disk when creating a VM from a managed image. <br><br> '
+                   'Possible values are: <br><br> **Windows** <br><br> **Linux**')
+        c.argument('os_state', arg_type=get_enum_type(['Generalized', 'Specialized']), help='This property allows the '
+                   'user to specify whether the virtual machines created under this image are \'Generalized\' or '
+                   '\'Specialized\'.')
+        c.argument('hyper_v_generation', arg_type=get_enum_type(['V1', 'V2']), help='The hypervisor generation of the '
+                   'Virtual Machine. Applicable to OS disks only.')
+        c.argument('end_of_life_date', help='The end of life date of the gallery image definition. This property can '
+                   'be used for decommissioning purposes. This property is updatable.')
+        c.argument('identifier', action=AddIdentifier, nargs='+', help='This is the gallery image definition '
+                   'identifier.')
+        c.argument('disallowed', action=AddDisallowed, nargs='+', help='Describes the disallowed disk types.')
+        c.argument('purchase_plan', action=AddPurchasePlan, nargs='+', help='Describes the gallery image definition '
+                   'purchase plan. This is used by marketplace images.')
+        c.argument('features', action=AddFeatures, nargs='+', help='A list of gallery image features.')
+        c.argument('v_cp_us', action=AddVCpUs, nargs='+', help='Describes the resource range.',
+                   arg_group='Recommended')
+        c.argument('memory', action=AddVCpUs, nargs='+', help='Describes the resource range.',
+                   arg_group='Recommended')
+
+    with self.argument_context('sig group-list') as c:
+        c.argument('location', arg_type=get_location_type(self.cli_ctx), id_part='name')
+
+    with self.argument_context('sig share') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('gallery_name', type=str, help='The name of the Shared Image Gallery.', id_part='name')
+        c.argument('operation_type', arg_type=get_enum_type(['Add', 'Remove', 'Reset']), help='This property allows '
+                   'you to specify the operation type of gallery sharing update. <br><br> Possible values are: '
+                   '<br><br> **Add** <br><br> **Remove** <br><br> **Reset**')
+        c.argument('groups', action=AddGroups, nargs='+', help='A list of sharing profile groups.')
+
+    with self.argument_context('sig image-definition list') as c:
+        c.argument('location', arg_type=get_location_type(self.cli_ctx))
+        c.argument('gallery_unique_name', type=str, help='The unique name of the Shared Gallery.')
+
+    with self.argument_context('sig image-definition show') as c:
+        c.argument('location', arg_type=get_location_type(self.cli_ctx), id_part='name')
+        c.argument('gallery_unique_name', type=str, help='The unique name of the Shared Gallery.',
+                   id_part='child_name_1')
+        c.argument('gallery_image_name', type=str, help='The name of the Shared Gallery Image Definition from which '
+                   'the Image Versions are to be listed.', id_part='child_name_2')
+
+    with self.argument_context('sig image-version list') as c:
+        c.argument('location', arg_type=get_location_type(self.cli_ctx))
+        c.argument('gallery_unique_name', type=str, help='The unique name of the Shared Gallery.')
+        c.argument('gallery_image_name', type=str, help='The name of the Shared Gallery Image Definition from which '
+                   'the Image Versions are to be listed.')
+
+    with self.argument_context('sig image-version show') as c:
+        c.argument('location', arg_type=get_location_type(self.cli_ctx), id_part='name')
+        c.argument('gallery_unique_name', type=str, help='The unique name of the Shared Gallery.',
+                   id_part='child_name_1')
+        c.argument('gallery_image_name', type=str, help='The name of the Shared Gallery Image Definition from which '
+                   'the Image Versions are to be listed.', id_part='child_name_2')
+        c.argument('gallery_image_version_name', type=str, help='The name of the gallery image version to be created. '
+                   'Needs to follow semantic version name pattern: The allowed characters are digit and period. Digits '
+                   'must be within the range of a 32-bit integer. Format: <MajorVersion>.<MinorVersion>.<Patch>',
+                   id_part='child_name_3')
