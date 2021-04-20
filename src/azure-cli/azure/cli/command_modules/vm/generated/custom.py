@@ -9,6 +9,8 @@
 # --------------------------------------------------------------------------
 # pylint: disable=too-many-lines
 
+from azure.cli.core.util import sdk_no_wait
+
 
 def sshkey_list(client,
                 resource_group_name=None):
@@ -57,3 +59,108 @@ def sshkey_delete(client,
                   ssh_public_key_name):
     return client.delete(resource_group_name=resource_group_name,
                          ssh_public_key_name=ssh_public_key_name)
+
+
+def sig_update(client,
+               resource_group_name,
+               gallery_name,
+               gallery_image_name,
+               tags=None,
+               description=None,
+               eula=None,
+               privacy_statement_uri=None,
+               release_note_uri=None,
+               os_type=None,
+               os_state=None,
+               hyper_v_generation=None,
+               end_of_life_date=None,
+               identifier=None,
+               disallowed=None,
+               purchase_plan=None,
+               features=None,
+               v_cp_us=None,
+               memory=None,
+               no_wait=False):
+    gallery_image = {}
+    gallery_image['tags'] = tags
+    gallery_image['description'] = description
+    gallery_image['eula'] = eula
+    gallery_image['privacy_statement_uri'] = privacy_statement_uri
+    gallery_image['release_note_uri'] = release_note_uri
+    gallery_image['os_type'] = os_type
+    gallery_image['os_state'] = os_state
+    gallery_image['hyper_v_generation'] = hyper_v_generation
+    gallery_image['end_of_life_date'] = end_of_life_date
+    gallery_image['identifier'] = identifier
+    gallery_image['disallowed'] = disallowed
+    gallery_image['purchase_plan'] = purchase_plan
+    gallery_image['features'] = features
+    gallery_image['recommended'] = {}
+    gallery_image['recommended']['v_cp_us'] = v_cp_us
+    gallery_image['recommended']['memory'] = memory
+    return sdk_no_wait(no_wait,
+                       client.update,
+                       resource_group_name=resource_group_name,
+                       gallery_name=gallery_name,
+                       gallery_image_name=gallery_image_name,
+                       gallery_image=gallery_image)
+
+
+def sig_group_list(client,
+                   location):
+    return client.list(location=location,
+                       shared_to="tenant")
+
+
+def sig_share(client,
+              resource_group_name,
+              gallery_name,
+              operation_type,
+              groups=None,
+              no_wait=False):
+    sharing_update = {}
+    sharing_update['operation_type'] = operation_type
+    sharing_update['groups'] = groups
+    return sdk_no_wait(no_wait,
+                       client.update,
+                       resource_group_name=resource_group_name,
+                       gallery_name=gallery_name,
+                       sharing_update=sharing_update)
+
+
+def sig_image_definition_list(client,
+                              location,
+                              gallery_unique_name):
+    return client.list(location=location,
+                       gallery_unique_name=gallery_unique_name,
+                       shared_to="tenant")
+
+
+def sig_image_definition_show(client,
+                              location,
+                              gallery_unique_name,
+                              gallery_image_name):
+    return client.get(location=location,
+                      gallery_unique_name=gallery_unique_name,
+                      gallery_image_name=gallery_image_name)
+
+
+def sig_image_version_list(client,
+                           location,
+                           gallery_unique_name,
+                           gallery_image_name):
+    return client.list(location=location,
+                       gallery_unique_name=gallery_unique_name,
+                       gallery_image_name=gallery_image_name,
+                       shared_to="tenant")
+
+
+def sig_image_version_show(client,
+                           location,
+                           gallery_unique_name,
+                           gallery_image_name,
+                           gallery_image_version_name):
+    return client.get(location=location,
+                      gallery_unique_name=gallery_unique_name,
+                      gallery_image_name=gallery_image_name,
+                      gallery_image_version_name=gallery_image_version_name)

@@ -8,3 +8,171 @@
 # regenerated.
 # --------------------------------------------------------------------------
 # pylint: disable=protected-access
+
+import argparse
+from collections import defaultdict
+from knack.util import CLIError
+
+
+class AddIdentifier(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        action = self.get_action(values, option_string)
+        namespace.identifier = action
+
+    def get_action(self, values, option_string):  # pylint: disable=no-self-use
+        try:
+            properties = defaultdict(list)
+            for (k, v) in (x.split('=', 1) for x in values):
+                properties[k].append(v)
+            properties = dict(properties)
+        except ValueError:
+            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
+        d = {}
+        for k in properties:
+            kl = k.lower()
+            v = properties[k]
+            if kl == 'publisher':
+                d['publisher'] = v[0]
+            elif kl == 'offer':
+                d['offer'] = v[0]
+            elif kl == 'sku':
+                d['sku'] = v[0]
+            else:
+                raise CLIError('Unsupported Key {} is provided for parameter identifier. All possible keys are: '
+                               'publisher, offer, sku'.format(k))
+        return d
+
+
+class AddDisallowed(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        action = self.get_action(values, option_string)
+        namespace.disallowed = action
+
+    def get_action(self, values, option_string):  # pylint: disable=no-self-use
+        try:
+            properties = defaultdict(list)
+            for (k, v) in (x.split('=', 1) for x in values):
+                properties[k].append(v)
+            properties = dict(properties)
+        except ValueError:
+            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
+        d = {}
+        for k in properties:
+            kl = k.lower()
+            v = properties[k]
+            if kl == 'disk-types':
+                d['disk_types'] = v
+            else:
+                raise CLIError('Unsupported Key {} is provided for parameter disallowed. All possible keys are: '
+                               'disk-types'.format(k))
+        return d
+
+
+class AddPurchasePlan(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        action = self.get_action(values, option_string)
+        namespace.purchase_plan = action
+
+    def get_action(self, values, option_string):  # pylint: disable=no-self-use
+        try:
+            properties = defaultdict(list)
+            for (k, v) in (x.split('=', 1) for x in values):
+                properties[k].append(v)
+            properties = dict(properties)
+        except ValueError:
+            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
+        d = {}
+        for k in properties:
+            kl = k.lower()
+            v = properties[k]
+            if kl == 'name':
+                d['name'] = v[0]
+            elif kl == 'publisher':
+                d['publisher'] = v[0]
+            elif kl == 'product':
+                d['product'] = v[0]
+            else:
+                raise CLIError('Unsupported Key {} is provided for parameter purchase_plan. All possible keys are: '
+                               'name, publisher, product'.format(k))
+        return d
+
+
+class AddFeatures(argparse._AppendAction):
+    def __call__(self, parser, namespace, values, option_string=None):
+        action = self.get_action(values, option_string)
+        super(AddFeatures, self).__call__(parser, namespace, action, option_string)
+
+    def get_action(self, values, option_string):  # pylint: disable=no-self-use
+        try:
+            properties = defaultdict(list)
+            for (k, v) in (x.split('=', 1) for x in values):
+                properties[k].append(v)
+            properties = dict(properties)
+        except ValueError:
+            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
+        d = {}
+        for k in properties:
+            kl = k.lower()
+            v = properties[k]
+            if kl == 'name':
+                d['name'] = v[0]
+            elif kl == 'value':
+                d['value'] = v[0]
+            else:
+                raise CLIError('Unsupported Key {} is provided for parameter features. All possible keys are: name, '
+                               'value'.format(k))
+        return d
+
+
+class AddVCpUs(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        action = self.get_action(values, option_string)
+        namespace.v_cp_us = action
+
+    def get_action(self, values, option_string):  # pylint: disable=no-self-use
+        try:
+            properties = defaultdict(list)
+            for (k, v) in (x.split('=', 1) for x in values):
+                properties[k].append(v)
+            properties = dict(properties)
+        except ValueError:
+            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
+        d = {}
+        for k in properties:
+            kl = k.lower()
+            v = properties[k]
+            if kl == 'min':
+                d['min'] = v[0]
+            elif kl == 'max':
+                d['max'] = v[0]
+            else:
+                raise CLIError('Unsupported Key {} is provided for parameter v_cp_us. All possible keys are: min, max'.
+                format(k))
+        return d
+
+
+class AddGroups(argparse._AppendAction):
+    def __call__(self, parser, namespace, values, option_string=None):
+        action = self.get_action(values, option_string)
+        super(AddGroups, self).__call__(parser, namespace, action, option_string)
+
+    def get_action(self, values, option_string):  # pylint: disable=no-self-use
+        try:
+            properties = defaultdict(list)
+            for (k, v) in (x.split('=', 1) for x in values):
+                properties[k].append(v)
+            properties = dict(properties)
+        except ValueError:
+            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
+        d = {}
+        for k in properties:
+            kl = k.lower()
+            v = properties[k]
+            if kl == 'type':
+                d['type'] = v[0]
+            elif kl == 'ids':
+                d['ids'] = v
+            else:
+                raise CLIError('Unsupported Key {} is provided for parameter groups. All possible keys are: type, ids'.
+                format(k))
+        return d
